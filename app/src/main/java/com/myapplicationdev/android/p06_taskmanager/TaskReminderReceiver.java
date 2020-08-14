@@ -44,7 +44,7 @@ public class TaskReminderReceiver extends BroadcastReceiver {
 
 		Intent intentReply = new Intent(context,ReplyActivity.class);
 		PendingIntent pendingIntentReply = PendingIntent.getActivity(context,1,intentReply,PendingIntent.FLAG_UPDATE_CURRENT);
-		RemoteInput ri = new RemoteInput.Builder("status").setLabel("Status Report").setChoices(new String[]{"Done","Not yet"}).build();
+		RemoteInput ri = new RemoteInput.Builder("status").setLabel("Status Report").setChoices(new String[]{"Completed","Not yet"}).build();
 
 
 		NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.mipmap.ic_launcher_round,"Launch Task Manager",pIntent).build();

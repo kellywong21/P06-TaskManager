@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Calendar;
 
@@ -41,14 +45,22 @@ public class AddActivity extends AppCompatActivity {
                 String desc = etDescription.getText().toString();
                 DBHelper dbh = new DBHelper(AddActivity.this);
                 int id = (int) dbh.insertTask(name, desc);
+                Toast.makeText(getApplicationContext(),String.valueOf(id),Toast.LENGTH_SHORT).show();
                 dbh.close();
 
                 //Create a new PendingIntent and add it .to the AlarmManager
                 Intent iReminder = new Intent(AddActivity.this, TaskReminderReceiver.class);
+                Intent toReplyClass = new Intent(AddActivity.this,ReplyActivity.class);
+
 
                 iReminder.putExtra("id", id);
                 iReminder.putExtra("name", name);
                 iReminder.putExtra("desc", desc);
+
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AddActivity.this);
+                SharedPreferences.Editor prefedit = sp.edit();
+                prefedit.putInt("id",id);
+                prefedit.commit();
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AddActivity.this, piReqCode, iReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
